@@ -1,18 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
 import { Feather, Ionicons, AntDesign, FontAwesome5 } from '@expo/vector-icons'
 
 import DataSource from './../../data'
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
     const { bank, credit, cash, total } = DataSource.account_information
+    const GroceriesFiltered = DataSource.detail.filter(item => item.category === 1)
+    console.log("dfgw", GroceriesFiltered)
 
     const renderItem = ({ item }) => {
-        console.log('item', item)
         const { category, type } = item
         return (
-            <View style={styles.flContainer}>
+            <TouchableOpacity
+                style={styles.flContainer}
+                onPress={() => setTimeout(() => {
+                    navigation.navigate('DetailProduct', {
+                        listProduct: GroceriesFiltered
+                    });
+                }, 500)}
+            >
                 <View style={[styles.flCategory, {
                     backgroundColor: `${category === 1 ? '#FEC180'
                         : `${category === 2 ? '#EFBAD3' : '#54BAE6'}`}`
@@ -38,7 +46,7 @@ export default function Dashboard() {
                     </View>
 
                 </View>
-            </View>
+            </TouchableOpacity>
 
         );
     };
